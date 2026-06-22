@@ -1,0 +1,86 @@
+# Movie Booking App - Class Diagram
+
+This document contains the class diagram for the core models and data access objects (DAOs) of the Movie Booking application.
+
+```mermaid
+classDiagram
+    class Movie {
+        -int movieId
+        -String title
+        -String language
+        -String region
+        -String genre
+        -int duration
+        -double rating
+        -int votes
+        -Date releaseDate
+        -String description
+        -String posterUrl
+        -String bannerUrl
+        -boolean isNowShowing
+        +getters()
+        +setters()
+    }
+
+    class Seat {
+        -int seatId
+        -String seatNumber
+        -String type
+        -String status
+        -int screenId
+        -double price
+        +getters()
+        +setters()
+    }
+
+    class Show {
+        -int showId
+        -int movieId
+        -int screenId
+        -Timestamp showTime
+        -String format
+        -String theatreName
+        -String location
+        -String screenName
+        -double price
+        +getters()
+        +setters()
+    }
+
+    class Theatre {
+        -int theatreId
+        -String name
+        -String location
+        -double rating
+        -int totalScreens
+        -String distance
+        -boolean hasIMAX
+        -boolean hasDolby
+        -boolean hasRecliner
+        +getters()
+        +setters()
+    }
+
+    class MovieDAO {
+        +getAllMovies() List~Movie~
+        +getMoviesByLanguage(String) List~Movie~
+        +getMovieById(int) Movie
+    }
+
+    class SeatDAO {
+        +getSeatsByShow(int, int) List~Seat~
+    }
+
+    class ShowDAO {
+        +getShowsByMovieAndDate(int, String) List~Show~
+        +getShowsByMovie(int) List~Show~
+    }
+
+    %% Relationships
+    MovieDAO ..> Movie : returns
+    SeatDAO ..> Seat : returns
+    ShowDAO ..> Show : returns
+    
+    Show "1" --> "1" Movie : represents
+    Show "1" --> "*" Seat : has available
+```
